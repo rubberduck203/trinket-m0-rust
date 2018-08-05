@@ -4,12 +4,12 @@ version = "0.1.0"
 authors = ["Christopher J. McClellan <chris.mcclellan203@gmail.com>"]
 keywords = ["no-std", "arm", "cortex-m", "embedded-hal"]
 
+[dependencies]
+panic-abort = "~0.1"
+
 [dependencies.atsamd21-hal]
 version = "~0.1"
 default-features = false
-
-[dev-dependencies]
-panic-abort = "~0.1"
 
 [features]
 # ask the HAL to enable atsamd21e18a support
