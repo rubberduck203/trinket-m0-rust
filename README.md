@@ -1,5 +1,14 @@
 # Board support package for Adafruit Trinket M0
 
+Heavily based on the [atsamd21-rs crate](https://github.com/wez/atsamd21-rs).
+This project uses the [atsamd21-hal crate](https://docs.rs/atsamd21-hal/latest/atsamd21_hal/) to create a BSP for the [Adafruit Trinket M0](https://learn.adafruit.com/adafruit-trinket-m0-circuitpython-arduino?view=all).
+
+This isn't quite a BSP yet.
+Right now it's a blinky light hello world program.
+That was the first step toward creating a nice abstraction for the Trinket M0.
+
+## Building
+
 The library this project is dependent on is currently stuck on an older nightly build.
 
 https://github.com/wez/atsamd21-rs/pull/3
