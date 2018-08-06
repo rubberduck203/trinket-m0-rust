@@ -44,19 +44,13 @@ Install Bossa
 ```bash
 arm-none-eabi-objcopy -O binary target/thumbv6m-none-eabi/debug/trinket_m0.bin
 
-bassash #interactive shell
-
-connect /dev/cu.usbmodem1441 #whatever serial port you're on
-erase
-write target/thumbv6m-none-eabi/debug/trinket_m0.bin
-verify target/thumbv6m-none-eabi/debug/trinket_m0.bin
-reset
+bossac -e -w -v -R -p /dev/cu.usbmodem1441 target/thumbv6m-none-eabi/debug/trinket_m0.bin
 ```
 
-In theory the following command should work, but I've no success thus far.
+In other words..
 
 ```bash
-bossac -e -w -v -R target/thumbv6m-none-eabi/debug/trinket_m0.bin
+bossac --erase --write --verify --reset --port /dev/cu.usbmodem1441 target/thumbv6-none-eabi/debug/trinket_m0.bin
 ```
 
 ## Known issues
