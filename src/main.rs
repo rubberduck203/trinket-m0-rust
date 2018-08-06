@@ -9,7 +9,26 @@ use hal::prelude::*;
 pub use hal::*;
 
 fn main() {
-    loop {
+    let mut peripherals = Peripherals::take().unwrap();
+    let mut pins = peripherals.PORT.split();
 
+    // Trinket 13
+    let mut red_led = pins.pa10.into_open_drain_output(&mut pins.port);
+
+    let mut clocks = clock::GenericClockController::new(
+        peripherals.GCLK,
+        &mut peripherals.PM,
+        &mut peripherals.SYSCTRL,
+        &mut peripherals.NVMCTRL,
+    );
+
+    let core = CorePeripherals::take().unwrap();
+    let mut delay = delay::Delay::new(core.SYST, &mut clocks);
+
+    loop {
+        delay.delay_ms(300u16);
+        red_led.set_high();
+        delay.delay_ms(300u16);
+        red_led.set_low();
     }
 }
