@@ -27,6 +27,13 @@ cargo build --target=thumbv6m-none-eabi
 
 `.cargo/config` sets up the linker.
 It expects `arm-none-eabi` to be on the path.
+The easiest way to get the required arm toolchain is to use the official arm repository and apt install.
+
+```bash
+sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa -y
+sudo apt update
+sudo apt install gcc-arm-embedded
+```
 
 This article has a ton of good information about Rust on ARM.
 
@@ -39,10 +46,14 @@ https://docs.rs/cortex-m-rt/0.5.1/cortex_m_rt/#an-example
 
 ## Flashing
 
+### Bossa
+
 Install Bossa
 
 ```bash
-arm-none-eabi-objcopy -O binary target/thumbv6m-none-eabi/debug/trinket_m0.bin
+arm-none-eabi-objcopy -O binary \
+  target/thumbv6m-none-eabi/debug/trinket_m0 \
+  target/thumbv6m-none-eabi/debug/trinket_m0.bin
 
 bossac -e -w -v -R -p /dev/cu.usbmodem1441 target/thumbv6m-none-eabi/debug/trinket_m0.bin
 ```
@@ -53,6 +64,29 @@ In other words..
 bossac --erase --write --verify --reset --port /dev/cu.usbmodem1441 target/thumbv6-none-eabi/debug/trinket_m0.bin
 ```
 
-## Known issues
+If using >=1.9 of `bossac`, then you *must* specify the offset.
 
-It seems that any delay longer than ~300ms causes the program to crash after a single flash.
+```bash
+# 0x2000 is the memory address where the code section starts
+bossac -e -w -v -R -p ttyACM0 -o 0x2000 target/thumbv6-none-eabi/debug/trinket_m0.bin
+```
+
+### UF2
+
+Adafruit's bootloader supports "drag & drop" programming via UF2 files.
+
+#### Install conversion script
+
+```bash
+sudo apt install python
+mkdir ~/bin
+cd ~/bin
+wget https://raw.githubusercontent.com/Microsoft/uf2/master/utils/uf2conv.py
+```
+
+#### Flashing
+
+```bash
+uf2conv.py -c -o target/thumbv6-none-eabi/debug/trinket_m0.uf2 target/thumbv6-none-eabi/debug/trinket_m0.bin
+cp target/thumbv6-none-eabi/debug/trinket_m0.uf2 /media/rubberduck/TRINKETBOOT/
+```
